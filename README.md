@@ -5,9 +5,10 @@
 - httpClient
 - 待增加
 
-* 下载本工程
-* 执行mvn install
-* 引入maven依赖：
+如何使用jar包：
+1. 下载本工程
+1. 执行mvn install
+1. 引入maven依赖：
 ```xml
 <dependency>
     <groupId>com.tts.core</groupId>
