@@ -1,9 +1,9 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Created by zhaoqi on 2016/5/12.
+ * Created by tts on 2016/5/12.
  */
 public class Invoker implements ServiceCaller{
     private ServiceFinder serviceFinder;
@@ -16,6 +16,6 @@ public class Invoker implements ServiceCaller{
 
     private <T> T doGet(ServiceInstanceDetail detail, String param, Class<T> clazz) {
         String url = detail.getLocalIp()+detail.getLocalPort();
-        return DotaHttpClient.send(param,url, RequestMethod.GET,clazz,0,0);
+        return BaseHttpClient.send(param,url, RequestMethod.GET,clazz,0,0);
     }
 }

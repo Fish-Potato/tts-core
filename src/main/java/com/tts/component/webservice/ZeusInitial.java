@@ -1,6 +1,6 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
-import com.zhaoqi.component.annotation.ZeuService;
+import com.tts.component.annotation.ZeuService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by zhaoqi on 2016/5/17.
+ * Created by tts on 2016/5/17.
  */
 public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 

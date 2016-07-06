@@ -1,7 +1,7 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
 /**
- * Created by zhaoqi on 2016/5/13.
+ * Created by tts on 2016/5/13.
  */
 public class ServiceInstanceDetail {
 

@@ -1,8 +1,8 @@
-package com.zhaoqi.component.converter;
+package com.tts.component.converter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.zhaoqi.util.JsonUtil;
+import com.tts.util.JsonUtil;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -19,15 +19,15 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 /**
- * Created by zhaoqi on 2016/5/4.
+ * Created by tts on 2016/5/4.
  */
 @Service
-public class DotaJsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
+public class JsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     public static final Charset UTF8 = Charset.forName("UTF-8");
     private Charset charset;
     private SerializerFeature[] features;
 
-    public DotaJsonHttpMessageConverter() {
+    public JsonHttpMessageConverter() {
         super(new MediaType[]{new MediaType("application", "json", UTF8), new MediaType("application", "*+json", UTF8)});
         this.charset = UTF8;
         this.features = new SerializerFeature[0];

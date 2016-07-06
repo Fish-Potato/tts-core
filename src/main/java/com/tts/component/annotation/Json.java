@@ -1,9 +1,9 @@
-package com.zhaoqi.component.annotation;
+package com.tts.component.annotation;
 
 import java.lang.annotation.*;
 
 /**
- * Created by zhaoqi on 2016/5/5.
+ * Created by tts on 2016/5/5.
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

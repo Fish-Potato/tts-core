@@ -1,4 +1,4 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Created by zhaoqi on 2016/5/13.
+ * Created by tts on 2016/5/13.
  */
 public class ZkCuratorServiceClient {
 

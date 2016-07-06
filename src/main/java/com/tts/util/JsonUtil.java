@@ -1,4 +1,4 @@
-package com.zhaoqi.util;
+package com.tts.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 /**
- * Created by zhaoqi on 2016/4/28.
+ * Created by tts on 2016/4/28.
  */
 public class JsonUtil {
 

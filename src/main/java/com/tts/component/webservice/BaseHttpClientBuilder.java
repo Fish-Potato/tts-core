@@ -1,4 +1,4 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zhaoqi on 2016/4/28.
+ * Created by tts on 2016/4/28.
  */
-public class DotaHttpClientBuilder {
+public class BaseHttpClientBuilder {
 
 
     public static String sendRequest(String args, String url, RequestMethod method, int connectionTimeout, int readTimeOut) {

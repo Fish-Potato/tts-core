@@ -10,16 +10,16 @@
         <!--<property name="connectString" value="${zkAddress:zk01.yohoops.org:2181,zk02.yohoops.org:2181,zk03.yohoops.org:2181,zk04.yohoops.org:2181,zk05.yohoops.org:2181}"/>-->
     <!--</bean>-->
 
-    <bean id="curatorFramework" class="com.zhaoqi.component.webservice.CuratorFrameworkFactoryBean" destroy-method="destroy">
+    <bean id="curatorFramework" class="com.tts.component.webservice.CuratorFrameworkFactoryBean" destroy-method="destroy">
         <property name="connectString" value="${zkServer:instance:port}"/>
     </bean>
 
-    <bean id="serviceRegister" class="com.zhaoqi.component.webservice.ZeusRegister">
+    <bean id="serviceRegister" class="com.tts.component.webservice.ZeusRegister">
         <constructor-arg name="basePath" value="/dota/services"/>
         <constructor-arg name="client" ref="curatorFramework"/>
     </bean>
 
-    <bean id="serviceInitial" class="com.zhaoqi.component.webservice.ZeusInitial">
+    <bean id="serviceInitial" class="com.tts.component.webservice.ZeusInitial">
         <property name="port" value="${service.port}"/>
         <property name="register" ref="serviceRegister"/>
     </bean>

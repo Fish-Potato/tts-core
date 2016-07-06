@@ -1,4 +1,4 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
 
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Created by zhaoqi on 2016/5/13.
+ * Created by tts on 2016/5/13.
  */
 public class ZkServiceFinder implements ServiceFinder {
 

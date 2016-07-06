@@ -1,7 +1,7 @@
-package com.zhaoqi.component.annotation;
+package com.tts.component.annotation;
 
-import com.zhaoqi.component.converter.DotaJsonHttpMessageConverter;
-import com.zhaoqi.util.JsonUtil;
+import com.tts.component.converter.JsonHttpMessageConverter;
+import com.tts.util.JsonUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -18,11 +18,11 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 /**
- * Created by zhaoqi on 2016/5/6.
+ * Created by tts on 2016/5/6.
  */
 public class SpecialArgumentsResolver implements HandlerMethodArgumentResolver {
     @Resource
-    DotaJsonHttpMessageConverter dotaJsonHttpMessageConverter;
+    JsonHttpMessageConverter jsonHttpMessageConverter;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -46,7 +46,7 @@ public class SpecialArgumentsResolver implements HandlerMethodArgumentResolver {
                 return JsonUtil.toObject(decodedQueryString, Class.forName(genericParameterType.getTypeName()));
             }
             // Json注解使用dotaJsonHttpMessageConverter读取参数
-            arg = dotaJsonHttpMessageConverter.readInternal(Class.forName(genericParameterType.getTypeName()), inputMessage);
+            arg = jsonHttpMessageConverter.readInternal(Class.forName(genericParameterType.getTypeName()), inputMessage);
             if (null == arg) {
                 throw new HttpMessageNotReadableException("Required request body is missing: " +
                         parameter.getMethod().toGenericString());

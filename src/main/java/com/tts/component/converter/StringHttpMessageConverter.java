@@ -1,7 +1,7 @@
-package com.zhaoqi.component.converter;
+package com.tts.component.converter;
 
 /**
- * Created by zhaoqi on 2016/5/4.
+ * Created by tts on 2016/5/4.
  */
 
 import org.springframework.http.HttpInputMessage;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Arjen Poutsma
  * @since 3.0
  */
-public class DotaStringHttpMessageConverter extends AbstractHttpMessageConverter<String> {
+public class StringHttpMessageConverter extends AbstractHttpMessageConverter<String> {
 
     public static final Charset DEFAULT_CHARSET = Charset.forName("ISO-8859-1");
 
@@ -42,9 +42,9 @@ public class DotaStringHttpMessageConverter extends AbstractHttpMessageConverter
 
     /**
      * A default constructor that uses {@code "ISO-8859-1"} as the default charset.
-     * @see #DotaStringHttpMessageConverter(Charset)
+     * @see #StringHttpMessageConverter(Charset)
      */
-    public DotaStringHttpMessageConverter() {
+    public StringHttpMessageConverter() {
         this(DEFAULT_CHARSET);
     }
 
@@ -52,7 +52,7 @@ public class DotaStringHttpMessageConverter extends AbstractHttpMessageConverter
      * A constructor accepting a default charset to use if the requested content
      * type does not specify one.
      */
-    public DotaStringHttpMessageConverter(Charset defaultCharset) {
+    public StringHttpMessageConverter(Charset defaultCharset) {
         super(new MediaType("text", "plain", defaultCharset), MediaType.ALL);
         this.defaultCharset = defaultCharset;
         this.availableCharsets = new ArrayList<Charset>(Charset.availableCharsets().values());

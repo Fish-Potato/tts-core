@@ -1,10 +1,10 @@
-package com.zhaoqi.util;
+package com.tts.util;
 
-import com.zhaoqi.component.webservice.DotaHttpClient;
+import com.tts.component.webservice.BaseHttpClient;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Created by zhaoqi on 2016/4/28.
+ * Created by tts on 2016/4/28.
  */
 public class RestUtil {
 
@@ -24,7 +24,7 @@ public class RestUtil {
     }
 
     public static <T> T send(Object params, String url, RequestMethod method, Class<T> clazz,int connectionTimeout,int readTimeOut) {
-        return DotaHttpClient.send(params,url,method,clazz,connectionTimeout,readTimeOut);
+        return BaseHttpClient.send(params,url,method,clazz,connectionTimeout,readTimeOut);
     }
 
 

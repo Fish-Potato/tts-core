@@ -1,4 +1,4 @@
-package com.zhaoqi.component.webservice;
+package com.tts.component.webservice;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * Created by zhaoqi on 2016/5/19.
+ * Created by tts on 2016/5/19.
  */
 public class CuratorFrameworkFactoryBean implements FactoryBean<CuratorFramework>,InitializingBean,DisposableBean {
 

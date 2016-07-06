@@ -1,4 +1,4 @@
-package com.zhaoqi.component.filter;
+package com.tts.component.filter;
 
 import java.io.IOException;
 
@@ -11,10 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by zhaoqi on 2016/5/5.
+ * Created by tts on 2016/5/5.
  * 过滤器，解决浏览器跨域
  */
-public class DotaCORFilter implements Filter {
+public class CORFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
