@@ -1,19 +1,19 @@
-# DotaCardsPlay
-###开发计划一期
+# TTStreet-core
+淘淘街核心jar包
+- ServiceCaller
+- @Json
+- httpClient
+- 待增加
 
-1. 加入httpClient
+如何使用jar包：
+1. 下载本工程
+1. 执行mvn install
+1. 引入maven依赖：
 
-2. 接口调用使用json，base64加密
-
-3. 使用Zookeeper实现服务发现
-4. 加入Hystrix实现服务调用和服务监控
-
-4. 加入数据库
-
-5. 加入缓存
-
-6. 完善Dota模型（物品、英雄等）
-
-7. 完成主要功能模块（战斗，副本等）
-
-8. 加入会员和登录模块
+```xml
+<dependency>
+    <groupId>com.tts.core</groupId>
+    <artifactId>tts-core</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+</dependency>
+```
