@@ -1,5 +1,9 @@
 package com.tts.component.cache;
 
+import com.tts.util.JsonUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.reflect.FieldUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -7,8 +11,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhaoqi on 2016/8/12 0012.
@@ -186,7 +196,66 @@ public class CacheHandlerAop {
         return getCacheKey(joinPoint, ttsCacheClean.keyExpression(), ttsCacheClean.includeArgs(), ttsCacheClean.excludeArgs());
     }
 
-    private String getCacheKey(ProceedingJoinPoint joinPoint, String s, String[] strings, String[] strings1) {
-        return "";
+    private String getCacheKey(ProceedingJoinPoint joinPoint, String expression, String[] includeArgs, String[] excludeArgs) {
+        String cacheKey ="";
+        Object[] args = joinPoint.getArgs();
+        try {
+            // key expression不为空的时候，key为手动设置，按规则替换后直接返回
+            if (StringUtils.isNotBlank(expression)) {
+                cacheKey = expression;
+                String[] replacingArgs = findReplacingArgs(expression);
+                for (Object arg:args) {
+                    for (String relacingArg:replacingArgs) {
+                        Object fieldValue = FieldUtils.readField(arg,relacingArg);
+                        cacheKey = cacheKey.replace("#{"+relacingArg+"}",JsonUtil.toString(fieldValue));
+                    }
+
+                }
+                return cacheKey;
+            } else {
+                for (Object arg : args) {
+                    Field[] fields = arg.getClass().getDeclaredFields();
+                    for (Field field: fields) {
+                        if (null != includeArgs && includeArgs.length>0) {
+                            for (String includeArg : includeArgs) {
+                                if (field.getName().equals(includeArg)) {
+                                    cacheKey +=includeArg+JsonUtil.toString(field.get(arg));
+                                    break;
+                                }
+                            }
+                        } else if (null != excludeArgs && excludeArgs.length>0) {
+                            for (String excludeArg : excludeArgs) {
+                                if (field.getName().equals(excludeArg)) {
+                                    continue;
+                                }
+                                cacheKey += field.get(arg);
+                            }
+                        } else {
+                            cacheKey += field.get(arg);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+        return cacheKey;
+    }
+
+    private String[] findReplacingArgs(String expression) {
+
+        List<String> arguments = new ArrayList<>();
+        String regex = "\\{.*\\}";
+        String[] splitStr = expression.split("#");
+        Pattern pattern = Pattern.compile(regex);
+        for (String str : splitStr) {
+            Matcher mat = pattern.matcher(str);
+            if (mat.find()) {
+                arguments.add(mat.group(0).substring(1,mat.group(0).length()-1));
+            }
+
+        }
+        return arguments.toArray(new String[arguments.size()]);
     }
 }
