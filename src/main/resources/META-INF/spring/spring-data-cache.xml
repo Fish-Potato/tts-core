@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- redis template definition -->
+    <bean id="stringRedisSerializer"
+          class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
+    <!-- pool config -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal:50}" />
+        <property name="maxIdle" value="${redis.pool.maxIdle:20}" />
+        <property name="minIdle" value="${redis.pool.minIdle:20}"/>
+        <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis:2000}" />
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow:false}" />
+        <property name="testWhileIdle" value="${redis.pool.testWhileIdle:false}"/>
+    </bean>
+
+    <!-- 只读 -->
+    <bean id="ttsJedisConnectionFactoryReadOnly" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:timeout="250"
+          p:poolConfig-ref="jedisPoolConfig"
+          p:hostName="${redis.readonly.proxy.address}"
+          p:port="${redis.readonly.proxy.port}"
+          p:password="${redis.readonly.proxy.auth}"
+          p:database="${redis.readonly.proxy.database:0}" primary="true" />
+
+    <bean id="gracefulRedisTemplateReadOnly"
+          class="com.tts.component.redis.TTSRedisTemplate" primary="false"
+          p:connectionFactory-ref="ttsJedisConnectionFactoryReadOnly"
+          p:keySerializer-ref="stringRedisSerializer"
+          p:valueSerializer-ref="stringRedisSerializer"
+          p:hashKeySerializer-ref="stringRedisSerializer"
+          p:hashValueSerializer-ref="stringRedisSerializer"/>
+
+
+    <!-- 读写 -->
+    <bean id="ttsJedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:timeout="250"
+          p:poolConfig-ref="jedisPoolConfig"
+          p:hostName="${redis.proxy.address}"
+          p:port="${redis.proxy.port}"
+          p:password="${redis.proxy.auth}"
+          p:database="${redis.proxy.database:0}" primary="true" />
+
+    <bean id="ttsRedisTemplate"
+          class="com.tts.component.redis.TTSRedisTemplate" primary="true"
+          p:connectionFactory-ref="ttsJedisConnectionFactory"
+          p:keySerializer-ref="stringRedisSerializer"
+          p:valueSerializer-ref="stringRedisSerializer"
+          p:hashKeySerializer-ref="stringRedisSerializer"
+          p:hashValueSerializer-ref="stringRedisSerializer"/>
+
+    <bean id="ttsValueOperations" class="com.tts.component.redis.GracefulValueOperations" primary="true"
+          p:valueOperations-ref="ttsRedisTemplate"/>
+
+    <bean id="ttsZSetOperations" class="com.tts.component.redis.GracefulZSetOperations" primary="true"
+          p:zSetOperations-ref="ttsRedisTemplate" />
+
+    <bean id="ttsListOperations" class="com.tts.component.redis.GracefulListOperations" primary="true"
+          p:listOperations-ref="ttsRedisTemplate" />
+
+    <bean id="ttsHashOperations" class="com.tts.component.redis.GracefulHashOperations" primary="true"
+          p:hashOperations-ref="ttsRedisTemplate" />
+
+    <bean id="ttsSetOperations" class="com.tts.component.redis.GracefulSetOperations" primary="true"
+          p:setOperations-ref="ttsRedisTemplate" />
+
+    <bean id="gracefulRedisTemplate" class="com.tts.component.redis.GracefulRedisTemplate" primary="true"
+          p:listOperations-ref="ttsListOperations"
+          p:valueOperations-ref="ttsValueOperations"
+          p:zSetOperations-ref="ttsZSetOperations"
+          p:redisTemplate-ref="ttsRedisTemplate"/>
+</beans>

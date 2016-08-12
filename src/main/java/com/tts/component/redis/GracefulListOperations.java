@@ -13,16 +13,16 @@ import java.util.List;
  */
 public class GracefulListOperations<K,V> implements BeanNameAware {
 
-    private ListOperations<K,V> listOperation;
+    private ListOperations<K,V> listOperations;
 
     private String beanName;
 
-    public ListOperations<K, V> getListOperation() {
-        return listOperation;
+    public ListOperations<K, V> getListOperations() {
+        return listOperations;
     }
 
-    public void setListOperation(ListOperations<K, V> listOperation) {
-        this.listOperation = listOperation;
+    public void setListOperations(ListOperations<K, V> listOperations) {
+        this.listOperations = listOperations;
     }
 
     @Override
@@ -31,26 +31,26 @@ public class GracefulListOperations<K,V> implements BeanNameAware {
     }
 
     public List<V> range(K key, int startIndex, int endIndex) {
-        return listOperation.range(key,startIndex,endIndex);
+        return listOperations.range(key,startIndex,endIndex);
     }
 
     public void leftPush(K key, V value) {
-        listOperation.leftPush(key,value);
+        listOperations.leftPush(key,value);
     }
 
     public void leftPushAll(K key, Collection<V> values) {
-        listOperation.leftPushAll(key,values);
+        listOperations.leftPushAll(key,values);
     }
 
     public void rightPushAll(K key, Collection<V> values) {
-        listOperation.rightPushAll(key, values);
+        listOperations.rightPushAll(key, values);
     }
 
     public void remove(K key, long count, V value) {
-        listOperation.remove(key,count,value);
+        listOperations.remove(key,count,value);
     }
 
     public Long size(K key) {
-        return listOperation.size(key);
+        return listOperations.size(key);
     }
 }

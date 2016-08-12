@@ -7,6 +7,12 @@ import org.springframework.data.redis.core.ZSetOperations;
 
 /**
  * Created by zhaoqi on 2016/8/11 0011.
+ * redis template封装类，封装了:
+ * @see TTSRedisTemplate
+ * @see GracefulValueOperations
+ * @see GracefulListOperations
+ * @see GracefulZSetOperations
+ *
  */
 public class GracefulRedisTemplate extends AbstractRedisTemplate {
 
