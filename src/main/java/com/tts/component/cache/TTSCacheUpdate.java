@@ -31,4 +31,11 @@ public @interface TTSCacheUpdate {
      * @return
      */
     String[] excludeArgs() default {};
+
+    /**
+     * 缓存失效时间，默认失效五分钟
+     * 单位为秒(second)
+     * @return
+     */
+    int expire() default 300;
 }
