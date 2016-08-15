@@ -1,21 +1,84 @@
 package com.tts.component.webservice;
 
+import com.tts.component.webservice.hystrix.HystrixCommonCommand;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
+
 /**
- * Created by tts on 2016/5/12.
+ * Created by zhaoqi on 2016/5/12.
  */
+@SuppressWarnings("unchecked")
 public class Invoker implements ServiceCaller{
+
     private ServiceFinder serviceFinder;
-    @Override
-    public <T> T execute(String serviceName, String param, Class<T> clazz) throws ServiceNotFoundException {
-        ServiceInstanceDetail serviceInstanceDetail = this.serviceFinder.getService(serviceName);
-        // call
-        return  this.doGet(serviceInstanceDetail,param,clazz);
+
+    // Timeout value in milliseconds for a command
+    private int defaultTimeOut ;
+
+    // waiting timeout
+    private int waitingTimeOut;
+
+    private <T> TTSFuture<T> execute(String serviceName, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException, InterruptedException, ExecutionException, TimeoutException {
+        HystrixCommonCommand commonCommand = new HystrixCommonCommand(serviceName, serviceFinder, method, param, clazz,timeOut);
+        commonCommand.setFallBack(fallBack);
+        Future future = commonCommand.queue();
+
+        return new TTSFuture(future,serviceName,waitingTimeOut);
     }
 
-    private <T> T doGet(ServiceInstanceDetail detail, String param, Class<T> clazz) {
-        String url = detail.getLocalIp()+detail.getLocalPort();
-        return BaseHttpClient.send(param,url, RequestMethod.GET,clazz,0,0);
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws Exception {
+        return this.execute(serviceName,param,clazz,fallBack,RequestMethod.GET,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, int timeOut) throws Exception {
+        return this.futureGet(serviceName,param,clazz,null,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack) throws Exception {
+        return this.futureGet(serviceName,param,clazz,fallBack,defaultTimeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz) throws Exception {
+        return this.futureGet(serviceName, param, clazz,null);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws Exception {
+        return this.execute(serviceName,param,clazz,fallBack,RequestMethod.POST,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack) throws Exception {
+        return this.futurePost(serviceName,param,clazz,fallBack,defaultTimeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, int timeOut) throws Exception {
+        return this.futurePost(serviceName,param,clazz,null,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz) throws Exception {
+        return this.futurePost(serviceName,param,clazz,null);
+    }
+
+
+    public void setServiceFinder(ServiceFinder serviceFinder) {
+        this.serviceFinder = serviceFinder;
+    }
+
+    public void setDefaultTimeOut(int defaultTimeOut) {
+        this.defaultTimeOut = defaultTimeOut;
+    }
+
+    public void setWaitingTimeOut(int waitingTimeOut) {
+        this.waitingTimeOut = waitingTimeOut;
     }
 }

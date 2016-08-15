@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by tts on 2016/5/17.
+ * Created by zhaoqi on 2016/5/17.
  */
 public class ZeusRegister implements IRegister{
 

@@ -1,7 +1,7 @@
 package com.tts.component.webservice;
 
 /**
- * Created by tts on 2016/5/13.
+ * Created by zhaoqi on 2016/5/13.
  */
 public class ServiceInstanceDetail {
 
@@ -27,6 +27,16 @@ public class ServiceInstanceDetail {
         this.methodPath = methodPath;
         this.serviceName = serviceName;
         this.serviceGroup = serviceGroup;
+    }
+
+    public ServiceInstanceDetail() {
+
+    }
+
+    public ServiceInstanceDetail(String localIp,String localPort,String serviceName) {
+        this.localIp = localIp;
+        this.localPort = localPort;
+        this.serviceName = serviceName;
     }
 
     public String getLocalHostName() {

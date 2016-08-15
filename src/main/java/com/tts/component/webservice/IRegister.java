@@ -1,8 +1,8 @@
 package com.tts.component.webservice;
 
 /**
- * Created by tts on 2016/5/17.
+ * Created by zhaoqi on 2016/5/17.
  */
 public interface IRegister {
-    void registerService(String hostName,String ip,String port,String classPath, String methodPath,String serviceName,String serviceGroup);
+    void registerService(String hostName, String ip, String port, String classPath, String methodPath, String serviceName, String serviceGroup);
 }

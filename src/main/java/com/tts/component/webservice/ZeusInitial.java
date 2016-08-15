@@ -1,6 +1,7 @@
 package com.tts.component.webservice;
 
 import com.tts.component.annotation.ZeuService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -27,10 +30,12 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
     private String port;
     private IRegister register;
+    private String group;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ZeusServices.putAll(applicationContext.getBeansWithAnnotation(ZeuService.class));
+        ZeusServices.putAll(applicationContext.getBeansWithAnnotation(Controller.class));
+        ZeusServices.putAll(applicationContext.getBeansWithAnnotation(RestController.class));
         logger.info("zeus service initialing , find all zeus service {}", ZeusServices);
     }
 
@@ -48,15 +53,36 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
             for (Method method: methods) {
                 RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
-                ZeuService zeuService = AnnotationUtils.findAnnotation(service.getClass(),ZeuService.class);
-                String serviceName = zeuService.value();
-                String serviceGroup = zeuService.group();
                 if (null != methodRequestMapping) {
+                    ZeuService zeuService = AnnotationUtils.findAnnotation(method,ZeuService.class);
+
+                    String serviceName = getServiceName(zeuService,method.getName());
+                    String serviceGroup = getServiceGroup(zeuService,group);
                     String methodPath = getPath(methodRequestMapping);
                     register.registerService(localHostName,localIp,localPort,classPath,methodPath,serviceName,serviceGroup);
                 }
             }
         }
+    }
+
+    private String getServiceName(ZeuService zeuService, String defaultName) {
+        if (null == zeuService) {
+            return defaultName;
+        }
+        if (StringUtils.isBlank(zeuService.value())) {
+            return defaultName;
+        }
+        return zeuService.value();
+    }
+
+    private String getServiceGroup(ZeuService zeuService, String defaultGroup) {
+        if (null == zeuService) {
+            return defaultGroup;
+        }
+        if (StringUtils.isBlank(zeuService.value())) {
+            return defaultGroup;
+        }
+        return zeuService.group();
     }
 
     private static final String getPath(RequestMapping requestMapping) {
@@ -79,5 +105,9 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
     public void setRegister(IRegister register) {
         this.register = register;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

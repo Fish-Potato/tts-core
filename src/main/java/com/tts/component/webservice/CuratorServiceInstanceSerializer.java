@@ -1,15 +1,15 @@
 package com.tts.component.webservice;
 
-import java.io.ByteArrayOutputStream;
-
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.InstanceSerializer;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.JavaType;
 
+import java.io.ByteArrayOutputStream;
+
 /**
- * Created by tts on 2016/5/13.
+ * Created by zhaoqi on 2016/5/13.
  */
 public class CuratorServiceInstanceSerializer<T> implements InstanceSerializer<T> {
 

@@ -7,7 +7,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!--<bean id="curatorFramework" class="org.apache.curator.framework.CuratorFrameworkFactory" destroy-method="destroy">-->
-        <!--<property name="connectString" value="${zkAddress:zk01.yohoops.org:2181,zk02.yohoops.org:2181,zk03.yohoops.org:2181,zk04.yohoops.org:2181,zk05.yohoops.org:2181}"/>-->
+    <!--<property name="connectString" value="${zkAddress:zk01.yohoops.org:2181,zk02.yohoops.org:2181,zk03.yohoops.org:2181,zk04.yohoops.org:2181,zk05.yohoops.org:2181}"/>-->
     <!--</bean>-->
 
     <bean id="curatorFramework" class="com.tts.component.webservice.CuratorFrameworkFactoryBean" destroy-method="destroy">
@@ -15,7 +15,7 @@
     </bean>
 
     <bean id="serviceRegister" class="com.tts.component.webservice.ZeusRegister">
-        <constructor-arg name="basePath" value="/dota/services"/>
+        <constructor-arg name="basePath" value="/tts/services"/>
         <constructor-arg name="client" ref="curatorFramework"/>
     </bean>
 
@@ -23,5 +23,23 @@
         <property name="port" value="${service.port}"/>
         <property name="register" ref="serviceRegister"/>
     </bean>
+
+    <bean id="serviceClient" class="com.tts.component.webservice.ZkCuratorServiceClient">
+        <constructor-arg name="basePath" value="/tts/services"/>
+        <constructor-arg name="client" ref="curatorFramework"/>
+    </bean>
+
+    <bean id="serviceFinder" class="com.tts.component.webservice.ZkServiceFinder">
+        <property name="client" ref="serviceClient"/>
+        <property name="strategy" ref="randomStrategy"/>
+    </bean>
+
+    <bean id="serviceCaller" class="com.tts.component.webservice.Invoker">
+        <property name="serviceFinder" ref="serviceFinder"/>
+        <property name="defaultTimeOut" value="${defaultTimeOut}"/>
+        <property name="waitingTimeOut" value="${waitingTimeOut}"/>
+    </bean>
+
+    <bean id="randomStrategy" class="com.tts.component.webservice.RandomStrategy"/>
 
 </beans>

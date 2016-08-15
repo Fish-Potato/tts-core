@@ -1,7 +1,7 @@
 package com.tts.component.webservice;
 
 /**
- * Created by tts on 2016/5/19.
+ * Created by zhaoqi on 2016/5/19.
  */
 public class ServiceNotFoundException extends Exception {
 

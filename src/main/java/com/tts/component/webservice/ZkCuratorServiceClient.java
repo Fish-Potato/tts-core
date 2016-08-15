@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Created by tts on 2016/5/13.
+ * Created by zhaoqi on 2016/5/13.
  */
 public class ZkCuratorServiceClient {
 
