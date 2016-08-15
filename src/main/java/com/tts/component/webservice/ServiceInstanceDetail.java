@@ -80,7 +80,7 @@ public class ServiceInstanceDetail {
     }
 
     public String getServiceName() {
-        return serviceName;
+        return serviceGroup+"."+serviceName;
     }
 
     public void setServiceName(String serviceName) {

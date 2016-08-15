@@ -27,7 +27,7 @@ public class ZeusRegister implements IRegister{
     public void registerService(String hostName, String ip, String port, String classPath, String methodPath, String serviceName, String serviceGroup) {
         ServiceInstanceDetail detail = new ServiceInstanceDetail(hostName,ip,port,classPath,methodPath,serviceName,serviceGroup);
         try {
-            ServiceInstance serviceInstance = ServiceInstance.builder().name(serviceName).address(ip).port(Integer.valueOf(port)).payload(detail).build();
+            ServiceInstance serviceInstance = ServiceInstance.builder().name(detail.getServiceName()).address(ip).port(Integer.valueOf(port)).payload(detail).build();
             serviceDiscovery.registerService(serviceInstance);
         } catch (Exception e) {
             logger.error("{} register error {}",serviceName,e);

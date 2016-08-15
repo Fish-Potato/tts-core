@@ -21,6 +21,7 @@
 
     <bean id="serviceInitial" class="com.tts.component.webservice.ZeusInitial">
         <property name="port" value="${service.port}"/>
+        <property name="group" value="${service.name}"/>
         <property name="register" ref="serviceRegister"/>
     </bean>
 
