@@ -109,7 +109,9 @@ public class CacheHandlerAop {
 
         TTSCacheClean ttsCacheClean = signature.getMethod().getAnnotation(TTSCacheClean.class);
 
-        final String cacheKey = TTSCacheKeyUtil.getCacheKey(joinPoint,ttsCacheClean,methodName);
+        String cleanMethodName = ttsCacheClean.methodName();
+
+        final String cacheKey = TTSCacheKeyUtil.getCacheKey(joinPoint,ttsCacheClean,StringUtils.isBlank(cleanMethodName)?methodName:cleanMethodName);
 
         boolean beforeTheMethod = ttsCacheClean.beforeTheMethod();
 
@@ -155,7 +157,9 @@ public class CacheHandlerAop {
 
         TTSCacheUpdate ttsCacheUpdate = signature.getMethod().getAnnotation(TTSCacheUpdate.class);
 
-        final String cacheKey = TTSCacheKeyUtil.getCacheKey(joinPoint,ttsCacheUpdate,methodName);
+        String cleanMethodName = ttsCacheUpdate.methodName();
+
+        final String cacheKey = TTSCacheKeyUtil.getCacheKey(joinPoint,ttsCacheUpdate,StringUtils.isBlank(cleanMethodName)?methodName:cleanMethodName);
         Object result;
         // 执行请求
         try {

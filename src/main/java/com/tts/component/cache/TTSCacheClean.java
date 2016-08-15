@@ -34,6 +34,12 @@ public @interface TTSCacheClean {
     String[] excludeArgs() default {};
 
     /**
+     * 被清理的方法名称
+     * @return
+     */
+    String methodName() default "";
+
+    /**
      * 是否在方法执行前清理缓存
      * 默认方法执行后才清理缓存
      * @return

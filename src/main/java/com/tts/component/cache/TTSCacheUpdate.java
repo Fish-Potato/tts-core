@@ -33,6 +33,12 @@ public @interface TTSCacheUpdate {
     String[] excludeArgs() default {};
 
     /**
+     * 被清理的方法名称
+     * @return
+     */
+    String methodName() default "";
+
+    /**
      * 缓存失效时间，默认失效五分钟
      * 单位为秒(second)
      * @return
