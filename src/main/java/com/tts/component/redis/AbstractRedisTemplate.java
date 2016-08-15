@@ -69,13 +69,7 @@ public abstract class AbstractRedisTemplate {
         }
         long beginTime = System.currentTimeMillis();
         try {
-            //原子命令,如果超过7天,因为twproxy不支持long time,单独用命令实现
-            if(timeout>604800){
-                getValueOperations().set(key, redisValue);
-                this.expire(key, timeout);
-            }else{
-                getValueOperations().set(key, redisValue, timeout, TimeUnit.SECONDS);
-            }
+            getValueOperations().set(key, redisValue, timeout, TimeUnit.SECONDS);
         } catch (Exception e) {
             warnLogger.warn("add cache failed!!! cachekey is:{}", key, e);
         } finally {

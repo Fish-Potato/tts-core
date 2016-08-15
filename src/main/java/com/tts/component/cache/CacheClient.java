@@ -5,13 +5,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by zhaoqi on 2016/8/12 0012.
  */
-public interface CacheClient<K,V> {
+public interface CacheClient {
 
-    void set(K key,V value);
+    void set(String key,Object value);
 
-    void set(K key, V value, long timeout, TimeUnit unit);
+    void set(String key, Object value, long timeout, TimeUnit unit);
 
-    V get(K key, Class<?> classType);
+    <T> T get(String key, Class<T> classType);
 
-    void delete(K key);
+    void delete(String key);
 }

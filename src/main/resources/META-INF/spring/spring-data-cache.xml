@@ -73,4 +73,11 @@
           p:valueOperations-ref="ttsValueOperations"
           p:zSetOperations-ref="ttsZSetOperations"
           p:redisTemplate-ref="ttsRedisTemplate"/>
+
+    <bean id="cacheHandlerAop" class="com.tts.component.cache.CacheHandlerAop" primary="true"
+          p:cacheClient-ref="redisCacheClient"/>
+
+
+    <bean id="redisCacheClient" class="com.tts.component.cache.RedisCacheClient" primary="true"
+          p:gracefulRedisTemplate-ref="gracefulRedisTemplate" />
 </beans>
