@@ -32,3 +32,5 @@
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
+some test in：
+[DotaCardsPlay](https://github.com/Fish-Potato/DotaCardsPlay/tree/test-tts-core)
