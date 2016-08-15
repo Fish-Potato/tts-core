@@ -14,6 +14,10 @@
 - graceful redis
     - 封装的redis调用
     - 封装的redis operations
+- @TTSCache
+    - 通过注解和aspectJ自动添加缓存和查询缓存
+    - @TTSCacheClean 清理缓存
+    - @TTSCacheUpdate 更新缓存
 - todo
 
 如何使用jar包：
