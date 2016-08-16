@@ -31,10 +31,10 @@ public class SpecialArgumentsResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        return this.readArguments(webRequest, parameter, parameter.getGenericParameterType());
+        return this.readArguments(webRequest, parameter, parameter.getParameterType());
     }
 
-    private Object readArguments(NativeWebRequest webRequest, MethodParameter parameter, Type genericParameterType) {
+    private Object readArguments(NativeWebRequest webRequest, MethodParameter parameter, Class<?> classType) {
         HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         ServletServerHttpRequest inputMessage = new ServletServerHttpRequest(servletRequest);
         Object arg =null;
@@ -43,15 +43,15 @@ public class SpecialArgumentsResolver implements HandlerMethodArgumentResolver {
             if (servletRequest.getMethod().equals(RequestMappingHandlerAdapter.METHOD_GET)) {
                 // base64解码
                 String decodedQueryString = new String(Base64Utils.decodeFromString(servletRequest.getQueryString()));
-                return JsonUtil.toObject(decodedQueryString, Class.forName(genericParameterType.getTypeName()));
+                return JsonUtil.toObject(decodedQueryString, classType);
             }
             // Json注解使用dotaJsonHttpMessageConverter读取参数
-            arg = jsonHttpMessageConverter.readInternal(Class.forName(genericParameterType.getTypeName()), inputMessage);
+            arg = jsonHttpMessageConverter.readInternal(classType, inputMessage);
             if (null == arg) {
                 throw new HttpMessageNotReadableException("Required request body is missing: " +
                         parameter.getMethod().toGenericString());
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             //
         }
         return arg;
