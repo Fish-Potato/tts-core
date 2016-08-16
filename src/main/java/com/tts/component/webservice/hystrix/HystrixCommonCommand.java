@@ -4,6 +4,7 @@ import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.hystrix.HystrixCommandProperties;
+import com.tts.component.webservice.ServiceNotAvailableException;
 import com.tts.component.webservice.TTSHttpClient;
 import com.tts.component.webservice.ServiceFinder;
 import com.tts.component.webservice.ServiceInstanceDetail;
@@ -49,7 +50,7 @@ public class HystrixCommonCommand<T> extends HystrixCommand<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private T doHttpCall(ServiceInstanceDetail detail) {
+    private T doHttpCall(ServiceInstanceDetail detail) throws ServiceNotAvailableException {
         String url = "http://"+detail.getLocalIp()+":"+detail.getLocalPort()+detail.getClassPath()+detail.getMethodPath();
         return (T) TTSHttpClient.send(param,url, methodType,responseType,0,0);
     }

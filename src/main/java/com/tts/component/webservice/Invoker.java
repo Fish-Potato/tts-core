@@ -21,7 +21,7 @@ public class Invoker implements ServiceCaller{
     // waiting timeout
     private int waitingTimeOut;
 
-    private <T> TTSFuture<T> execute(String serviceName, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException, InterruptedException, ExecutionException, TimeoutException {
+    private <T> TTSFuture<T> execute(String serviceName, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException,ServiceNotAvailableException {
         HystrixCommonCommand commonCommand = new HystrixCommonCommand(serviceName, serviceFinder, method, param, clazz,timeOut);
         commonCommand.setFallBack(fallBack);
         Future future = commonCommand.queue();
@@ -30,42 +30,42 @@ public class Invoker implements ServiceCaller{
     }
 
     @Override
-    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws Exception {
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.execute(serviceName,param,clazz,fallBack,RequestMethod.GET,timeOut);
     }
 
     @Override
-    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, int timeOut) throws Exception {
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, int timeOut) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.futureGet(serviceName,param,clazz,null,timeOut);
     }
 
     @Override
-    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack) throws Exception {
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.futureGet(serviceName,param,clazz,fallBack,defaultTimeOut);
     }
 
     @Override
-    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz) throws Exception {
+    public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.futureGet(serviceName, param, clazz,null);
     }
 
     @Override
-    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws Exception {
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.execute(serviceName,param,clazz,fallBack,RequestMethod.POST,timeOut);
     }
 
     @Override
-    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack) throws Exception {
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.futurePost(serviceName,param,clazz,fallBack,defaultTimeOut);
     }
 
     @Override
-    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, int timeOut) throws Exception {
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, int timeOut) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.futurePost(serviceName,param,clazz,null,timeOut);
     }
 
     @Override
-    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz) throws Exception {
+    public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz) throws ServiceNotFoundException,ServiceNotAvailableException {
         return this.futurePost(serviceName,param,clazz,null);
     }
 

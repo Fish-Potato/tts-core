@@ -3,8 +3,9 @@ package com.tts.component.webservice;
 /**
  * Created by zhaoqi on 2016/5/19.
  */
-public class ServiceNotFoundException extends Exception {
+public class ServiceNotFoundException extends RuntimeException {
 
+    private Throwable originException;
     private String message;
 
     private String serviceName;
@@ -12,6 +13,12 @@ public class ServiceNotFoundException extends Exception {
     public ServiceNotFoundException(String serviceName) {
         super();
         this.serviceName = serviceName;
+    }
+
+    public ServiceNotFoundException(String serviceName,Throwable throwable) {
+        super();
+        this.serviceName = serviceName;
+        this.originException = throwable;
     }
 
     public String getMessage() {
