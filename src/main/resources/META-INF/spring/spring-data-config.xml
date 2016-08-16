@@ -1,0 +1,16 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="core-config-writer" class="com.tts.component.config.ConfigWriter">
+        <property name="client" ref="curatorFramework"/>
+        <property name="serviceName" value="${service.name}" />
+        <property name="CONFIG_FILE" value="${global.config.file}" />
+    </bean>
+
+    <bean id="core-config-reader"
+          class="com.tts.component.config.ConfigReader" depends-on="core-config-writer">
+    </bean>
+
+</beans>
