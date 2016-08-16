@@ -26,7 +26,7 @@ import java.util.Map;
 public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
     private static final Logger logger = LoggerFactory.getLogger(ZeusInitial.class);
-    private static Map<String, Object> ZeusServices = new HashMap<>();
+    private static Map<String, Object> zeusServices = new HashMap<>();
 
     private String port;
     private IRegister register;
@@ -34,9 +34,9 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ZeusServices.putAll(applicationContext.getBeansWithAnnotation(Controller.class));
-        ZeusServices.putAll(applicationContext.getBeansWithAnnotation(RestController.class));
-        logger.info("zeus service initialing , find all zeus service {}", ZeusServices);
+        zeusServices.putAll(applicationContext.getBeansWithAnnotation(Controller.class));
+        zeusServices.putAll(applicationContext.getBeansWithAnnotation(RestController.class));
+        logger.info("zeus service initialing , find all zeus service {}", zeusServices);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
         String localIp = InetAddress.getLocalHost().getHostAddress();
         String localHostName = InetAddress.getLocalHost().getHostName();
         String localPort = port;
-        for (Object service : ZeusServices.values()) {
+        for (Object service : zeusServices.values()) {
 
             RequestMapping requestMapping =AnnotationUtils.findAnnotation(service.getClass(), RequestMapping.class);
             String classPath = getPath(requestMapping);

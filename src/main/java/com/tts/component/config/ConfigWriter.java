@@ -24,7 +24,7 @@ public class ConfigWriter implements InitializingBean,DisposableBean{
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigWriter.class);
 
-    private String CONFIG_PATH = "tts/config";
+    private String CONFIG_PATH = "/tts/config";
 
     private String serviceName;
 
