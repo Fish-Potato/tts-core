@@ -18,6 +18,9 @@
     - 通过注解和aspectJ自动添加缓存和查询缓存
     - @TTSCacheClean 清理缓存
     - @TTSCacheUpdate 更新缓存
+- ConfigReader
+    - 动态配置读取
+    - 启动时读取配置到zk
 - todo
 
 如何使用jar包：
