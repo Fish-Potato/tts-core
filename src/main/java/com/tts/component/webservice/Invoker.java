@@ -21,8 +21,8 @@ public class Invoker implements ServiceCaller{
     // waiting timeout
     private int waitingTimeOut;
 
-    private <T> TTSFuture<T> execute(String serviceName, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException,ServiceNotAvailableException {
-        HystrixCommonCommand commonCommand = new HystrixCommonCommand(serviceName, serviceFinder, method, param, clazz,timeOut);
+    private <T> TTSFuture<T> execute(String serviceName,String url, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException,ServiceNotAvailableException {
+        HystrixCommonCommand commonCommand = new HystrixCommonCommand(serviceName, url, serviceFinder, method, param, clazz,timeOut);
         commonCommand.setFallBack(fallBack);
         Future future = commonCommand.queue();
 
@@ -31,7 +31,7 @@ public class Invoker implements ServiceCaller{
 
     @Override
     public <T> TTSFuture<T> futureGet(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws ServiceNotFoundException,ServiceNotAvailableException {
-        return this.execute(serviceName,param,clazz,fallBack,RequestMethod.GET,timeOut);
+        return this.execute(serviceName,null,param,clazz,fallBack,RequestMethod.GET,timeOut);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Invoker implements ServiceCaller{
 
     @Override
     public <T> TTSFuture<T> futurePost(String serviceName, Object param, Class<T> clazz, T fallBack, int timeOut) throws ServiceNotFoundException,ServiceNotAvailableException {
-        return this.execute(serviceName,param,clazz,fallBack,RequestMethod.POST,timeOut);
+        return this.execute(serviceName,null,param,clazz,fallBack,RequestMethod.POST,timeOut);
     }
 
     @Override
@@ -69,6 +69,45 @@ public class Invoker implements ServiceCaller{
         return this.futurePost(serviceName,param,clazz,null);
     }
 
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, String url, Object param, Class<T> clazz, T fallBack, int timeOut) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return this.execute(serviceName,url,param,clazz,fallBack,RequestMethod.POST,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, String url, Object param, Class<T> clazz, T fallBack, int timeOut) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return this.execute(serviceName,url,param,clazz,fallBack,RequestMethod.GET,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, String url, Object param, Class<T> clazz) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return futurePost(serviceName,url,param,clazz,null,defaultTimeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, String url, Object param, Class<T> clazz, T fallBack) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return futurePost(serviceName,url,param,clazz,fallBack,defaultTimeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futurePost(String serviceName, String url, Object param, Class<T> clazz, int timeOut) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return futurePost(serviceName,url,param,clazz,null,timeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, String url, Object param, Class<T> clazz) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return futureGet(serviceName,url,param,clazz,null,defaultTimeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, String url, Object param, Class<T> clazz, T fallBack) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return futureGet(serviceName,url,param,clazz,fallBack,defaultTimeOut);
+    }
+
+    @Override
+    public <T> TTSFuture<T> futureGet(String serviceName, String url, Object param, Class<T> clazz, int timeOut) throws ServiceNotFoundException, ServiceNotAvailableException {
+        return futureGet(serviceName,url,param,clazz,null,timeOut);
+    }
 
     public void setServiceFinder(ServiceFinder serviceFinder) {
         this.serviceFinder = serviceFinder;

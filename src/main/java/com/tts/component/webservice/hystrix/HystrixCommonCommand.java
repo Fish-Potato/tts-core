@@ -8,6 +8,7 @@ import com.tts.component.webservice.ServiceNotAvailableException;
 import com.tts.component.webservice.TTSHttpClient;
 import com.tts.component.webservice.ServiceFinder;
 import com.tts.component.webservice.ServiceInstanceDetail;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,17 +21,19 @@ public class HystrixCommonCommand<T> extends HystrixCommand<T> {
     private static final Logger logger = LoggerFactory.getLogger(HystrixCommonCommand.class);
 
     private String serviceName;
+    private String urlPath;
     private ServiceFinder serviceFinder;
     private RequestMethod methodType;
     private Object param;
     private Class responseType;
     private T fallBack;
 
-    public HystrixCommonCommand(String serviceName, ServiceFinder serviceFinder, RequestMethod methodType, Object param, Class<T> responseType, int timeOut) {
+    public HystrixCommonCommand(String serviceName, String urlPath, ServiceFinder serviceFinder, RequestMethod methodType, Object param, Class<T> responseType, int timeOut) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(serviceName.split("\\.")[0]))
                 .andCommandKey(HystrixCommandKey.Factory.asKey(serviceName))
                 .andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(timeOut)));
         this.serviceName=serviceName;
+        this.urlPath = urlPath;
         this.serviceFinder=serviceFinder;
         this.methodType=methodType;
         this.param=param;
@@ -44,14 +47,19 @@ public class HystrixCommonCommand<T> extends HystrixCommand<T> {
      */
     @Override
     protected T run() throws Exception {
-        // http call
-        ServiceInstanceDetail detail = serviceFinder.getService(serviceName);
-        return this.doHttpCall(detail);
+        String url;
+        if (StringUtils.isNotBlank(urlPath)) {
+            url = urlPath;
+        } else {
+            // http call
+            ServiceInstanceDetail detail = serviceFinder.getService(serviceName);
+            url = "http://"+detail.getLocalIp()+":"+detail.getLocalPort()+detail.getClassPath()+detail.getMethodPath();
+        }
+        return this.doHttpCall(url);
     }
 
     @SuppressWarnings("unchecked")
-    private T doHttpCall(ServiceInstanceDetail detail) throws ServiceNotAvailableException {
-        String url = "http://"+detail.getLocalIp()+":"+detail.getLocalPort()+detail.getClassPath()+detail.getMethodPath();
+    private T doHttpCall(String url) throws ServiceNotAvailableException {
         return (T) TTSHttpClient.send(param,url, methodType,responseType,0,0);
     }
 
@@ -77,6 +85,6 @@ public class HystrixCommonCommand<T> extends HystrixCommand<T> {
 
     private T doFallBack() {
         // do something
-        return null;
+        return fallBack;
     }
 }
