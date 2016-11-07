@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
     private static final Logger logger = LoggerFactory.getLogger(ZeusInitial.class);
     private static Map<String, Object> zeusServices = new HashMap<>();
 
+    private String localIp;
     private String port;
     private IRegister register;
     private String group;
@@ -41,7 +44,7 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        String localIp = InetAddress.getLocalHost().getHostAddress();
+        String localIp = this.getLocalIp();
         String localHostName = InetAddress.getLocalHost().getHostName();
         String localPort = port;
         for (Object service : zeusServices.values()) {
@@ -63,6 +66,31 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
                 }
             }
         }
+    }
+
+
+    private String getLocalIp() {
+        if (StringUtils.isNotEmpty(this.localIp)) {
+            return localIp;
+        }
+        String localIP = "127.0.0.1";
+        DatagramSocket sock = null;
+
+        try {
+            InetSocketAddress e = new InetSocketAddress(InetAddress.getByName("1.2.3.4"), 1);
+            sock = new DatagramSocket();
+            sock.connect(e);
+            localIP = sock.getLocalAddress().getHostAddress();
+            this.localIp = localIP;
+        } catch (Exception e) {
+            logger.error("get local ip error",e);
+        } finally {
+            sock.disconnect();
+            sock.close();
+            sock = null;
+        }
+
+        return localIP;
     }
 
     private String getServiceName(ZeuService zeuService, String defaultName) {
