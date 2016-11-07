@@ -30,10 +30,11 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
     private static final Logger logger = LoggerFactory.getLogger(ZeusInitial.class);
     private static Map<String, Object> zeusServices = new HashMap<>();
 
-    private String localIp;
+    private String ip;
     private String port;
     private IRegister register;
     private String group;
+    private String hostName;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -44,8 +45,8 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        String localIp = this.getLocalIp();
-        String localHostName = InetAddress.getLocalHost().getHostName();
+        String localIp = this.getLocalHost()[0];
+        String localHostName = this.getLocalHost()[1];
         String localPort = port;
         for (Object service : zeusServices.values()) {
 
@@ -69,11 +70,12 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
     }
 
 
-    private String getLocalIp() {
-        if (StringUtils.isNotEmpty(this.localIp)) {
-            return localIp;
+    private String[] getLocalHost() {
+        if (StringUtils.isNotEmpty(this.ip) && StringUtils.isNotEmpty(this.hostName)) {
+            return new String[]{ip,hostName};
         }
         String localIP = "127.0.0.1";
+        String localHostName = "local";
         DatagramSocket sock = null;
 
         try {
@@ -81,7 +83,9 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
             sock = new DatagramSocket();
             sock.connect(e);
             localIP = sock.getLocalAddress().getHostAddress();
-            this.localIp = localIP;
+            localHostName = sock.getLocalAddress().getHostName();
+            this.ip = localIP;
+            this.hostName = localHostName;
         } catch (Exception e) {
             logger.error("get local ip error",e);
         } finally {
@@ -90,7 +94,7 @@ public class ZeusInitial implements ApplicationContextAware , InitializingBean{
             sock = null;
         }
 
-        return localIP;
+        return new String[]{localIP,localHostName};
     }
 
     private String getServiceName(ZeuService zeuService, String defaultName) {
