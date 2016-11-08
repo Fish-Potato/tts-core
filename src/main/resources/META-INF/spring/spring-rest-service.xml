@@ -32,7 +32,7 @@
 
     <bean id="serviceFinder" class="com.tts.component.webservice.ZkServiceFinder">
         <property name="client" ref="serviceClient"/>
-        <property name="strategy" ref="randomStrategy"/>
+        <property name="strategy" ref="roundRobinStrategy"/>
     </bean>
 
     <bean id="serviceCaller" class="com.tts.component.webservice.Invoker">
@@ -42,5 +42,6 @@
     </bean>
 
     <bean id="randomStrategy" class="com.tts.component.webservice.RandomStrategy"/>
+    <bean id="roundRobinStrategy" class="com.tts.component.webservice.RoundRobinStrategy"/>
 
 </beans>
