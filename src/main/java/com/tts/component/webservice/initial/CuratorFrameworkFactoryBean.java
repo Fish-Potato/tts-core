@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.initial;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;

@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.http;
 
 import com.tts.util.JsonUtil;
 import org.springframework.util.Base64Utils;

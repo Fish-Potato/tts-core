@@ -1,5 +1,6 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.register;
 
+import com.tts.component.webservice.domain.ServiceInstanceDetail;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by zhaoqi on 2016/5/17.
  */
-public class ZeusRegister implements IRegister{
+public class ZeusRegister implements IRegister {
 
     private static final Logger logger = LoggerFactory.getLogger(ZeusRegister.class);
 

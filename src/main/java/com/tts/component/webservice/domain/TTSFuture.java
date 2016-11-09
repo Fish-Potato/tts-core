@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

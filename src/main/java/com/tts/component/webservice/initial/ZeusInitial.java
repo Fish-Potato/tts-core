@@ -1,6 +1,7 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.initial;
 
 import com.tts.component.annotation.ZeuService;
+import com.tts.component.webservice.register.IRegister;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

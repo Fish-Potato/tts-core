@@ -1,17 +1,20 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.finder;
 
+import com.tts.component.webservice.domain.TTSFuture;
+import com.tts.component.webservice.excption.ServiceNotAvailableException;
+import com.tts.component.webservice.excption.ServiceNotFoundException;
 import com.tts.component.webservice.hystrix.HystrixCommonCommand;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.ExecutionException;
+import javax.annotation.Resource;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by zhaoqi on 2016/5/12.
  */
 @SuppressWarnings("unchecked")
-public class Invoker implements ServiceCaller{
+public class Invoker implements ServiceCaller {
 
     private ServiceFinder serviceFinder;
 
@@ -21,8 +24,10 @@ public class Invoker implements ServiceCaller{
     // waiting timeout
     private int waitingTimeOut;
 
-    private <T> TTSFuture<T> execute(String serviceName,String url, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException,ServiceNotAvailableException {
-        HystrixCommonCommand commonCommand = new HystrixCommonCommand(serviceName, url, serviceFinder, method, param, clazz,timeOut);
+    private RestTemplate restTemplate;
+
+    private <T> TTSFuture<T> execute(String serviceName, String url, Object param, Class<T> clazz, T fallBack, RequestMethod method, Integer timeOut ) throws ServiceNotFoundException,ServiceNotAvailableException {
+        HystrixCommonCommand commonCommand = new HystrixCommonCommand(serviceName, url, serviceFinder, method, param, clazz,timeOut,restTemplate);
         commonCommand.setFallBack(fallBack);
         Future future = commonCommand.queue();
 
@@ -119,5 +124,9 @@ public class Invoker implements ServiceCaller{
 
     public void setWaitingTimeOut(int waitingTimeOut) {
         this.waitingTimeOut = waitingTimeOut;
+    }
+
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 }

@@ -1,6 +1,6 @@
 package com.tts.util;
 
-import com.tts.component.webservice.TTSHttpClient;
+import com.tts.component.webservice.http.TTSHttpClient;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**

@@ -1,6 +1,10 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.finder;
 
 
+import com.tts.component.webservice.domain.ServiceInstanceDetail;
+import com.tts.component.webservice.excption.ServiceNotFoundException;
+import com.tts.component.webservice.finder.strategy.Strategy;
+import com.tts.component.webservice.register.ZkCuratorServiceClient;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +26,7 @@ public class ZkServiceFinder implements ServiceFinder {
     }
 
     @Override
-    public ServiceInstanceDetail getService(String serviceName) throws ServiceNotFoundException{
+    public ServiceInstanceDetail getService(String serviceName) throws ServiceNotFoundException {
         try {
             List instances =this.client.getServiceByName(serviceName);
             ServiceInstance serviceInstance = (ServiceInstance) this.strategy.getServiceInstance(instances);

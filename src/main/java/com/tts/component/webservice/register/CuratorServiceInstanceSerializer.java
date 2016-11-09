@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.register;
 
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.InstanceSerializer;

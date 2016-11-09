@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.http;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;

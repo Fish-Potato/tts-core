@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.domain;
 
 /**
  * Created by zhaoqi on 2016/5/13.

@@ -1,4 +1,4 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.excption;
 
 /**
  * Created by zhaoqi on 2016/8/16 0016.

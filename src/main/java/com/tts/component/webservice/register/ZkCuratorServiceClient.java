@@ -1,8 +1,9 @@
-package com.tts.component.webservice;
+package com.tts.component.webservice.register;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.tts.component.webservice.domain.ServiceInstanceDetail;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.x.discovery.ServiceCache;
 import org.apache.curator.x.discovery.ServiceDiscovery;

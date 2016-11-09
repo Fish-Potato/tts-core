@@ -10,38 +10,69 @@
     <!--<property name="connectString" value="${zkAddress:zk01.yohoops.org:2181,zk02.yohoops.org:2181,zk03.yohoops.org:2181,zk04.yohoops.org:2181,zk05.yohoops.org:2181}"/>-->
     <!--</bean>-->
 
-    <bean id="curatorFramework" class="com.tts.component.webservice.CuratorFrameworkFactoryBean" destroy-method="destroy">
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="clientHttpRequestFactory"/>
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/plain;charset=UTF-8</value>
+                            <value>text/html;charset=UTF-8</value>
+                            <value>text/xml;charset=GBK</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+                <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                    <property name="supportedMediaTypes" value="application/json;charset=UTF-8"/>
+                </bean>
+            </list>
+        </property>
+        <!--<property name="errorHandler" ref="errorHandler"/>-->
+    </bean>
+
+    <bean id="clientHttpRequestFactory"
+          class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+        <property name="readTimeout" value="${http.call.readTimeOut:1000}"/>
+        <property name="connectTimeout" value="${http.call.connectTimeout:5000}"/>
+    </bean>
+
+    <bean id="curatorFramework" class="com.tts.component.webservice.initial.CuratorFrameworkFactoryBean" destroy-method="destroy">
         <property name="connectString" value="${zkServer:instance:port}"/>
     </bean>
 
-    <bean id="serviceRegister" class="com.tts.component.webservice.ZeusRegister">
+    <bean id="serviceRegister" class="com.tts.component.webservice.register.ZeusRegister">
         <constructor-arg name="basePath" value="/tts/services"/>
         <constructor-arg name="client" ref="curatorFramework"/>
     </bean>
 
-    <bean id="serviceInitial" class="com.tts.component.webservice.ZeusInitial">
+    <bean id="serviceInitial" class="com.tts.component.webservice.initial.ZeusInitial">
         <property name="port" value="${service.port}"/>
         <property name="group" value="${service.name}"/>
         <property name="register" ref="serviceRegister"/>
     </bean>
 
-    <bean id="serviceClient" class="com.tts.component.webservice.ZkCuratorServiceClient">
+    <bean id="serviceClient" class="com.tts.component.webservice.register.ZkCuratorServiceClient">
         <constructor-arg name="basePath" value="/tts/services"/>
         <constructor-arg name="client" ref="curatorFramework"/>
     </bean>
 
-    <bean id="serviceFinder" class="com.tts.component.webservice.ZkServiceFinder">
+    <bean id="serviceFinder" class="com.tts.component.webservice.finder.ZkServiceFinder">
         <property name="client" ref="serviceClient"/>
         <property name="strategy" ref="roundRobinStrategy"/>
     </bean>
 
-    <bean id="serviceCaller" class="com.tts.component.webservice.Invoker">
+    <bean id="serviceCaller" class="com.tts.component.webservice.finder.Invoker">
         <property name="serviceFinder" ref="serviceFinder"/>
         <property name="defaultTimeOut" value="${defaultTimeOut}"/>
         <property name="waitingTimeOut" value="${waitingTimeOut}"/>
+        <property name="restTemplate" ref="restTemplate"/>
     </bean>
 
-    <bean id="randomStrategy" class="com.tts.component.webservice.RandomStrategy"/>
-    <bean id="roundRobinStrategy" class="com.tts.component.webservice.RoundRobinStrategy"/>
+    <bean id="randomStrategy" class="com.tts.component.webservice.finder.strategy.RandomStrategy"/>
+    <bean id="roundRobinStrategy" class="com.tts.component.webservice.finder.strategy.RoundRobinStrategy"/>
 
 </beans>
