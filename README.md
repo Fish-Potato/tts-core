@@ -1,20 +1,9 @@
 # TTStreet-core
 淘淘街核心jar包
 - ServiceCaller
-    - 服务自动注册和发现
-    - 基于hystrix的服务熔断和降级
-    - 系统间服务调用
-    - 服务监控
-    - 网络拓扑（todo）
 - @Json
-    - 基于注解的调用参数加密&序列化和反序列化
-    - 支持get和post
 - httpClient
-    - 封装的http调用客户端
-- graceful redis
-    - 封装的redis调用
-    - 封装的redis operations
-- todo
+- 待增加
 
 如何使用jar包：
 1. 下载本工程
